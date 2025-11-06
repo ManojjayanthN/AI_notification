@@ -1,0 +1,4 @@
+id,user_id,event_id,timestamp,delivery_status,opened
+1,2,1,2025-11-06 09:00,Sent,True
+2,3,1,2025-11-06 09:00,Sent,False
+3,4,2,2025-11-06 09:00,Failed,False
