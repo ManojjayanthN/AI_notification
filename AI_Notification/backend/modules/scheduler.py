@@ -1,7 +1,8 @@
 import schedule
 import time
 from backend.modules.notification_sender import send_email
-from backend.models import db, User, Event, NotificationLog
+from backend.models import db_user, db_event, db_log, User, Event, NotificationLog
+
 from datetime import datetime
 
 def schedule_notifications(app):
