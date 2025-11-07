@@ -1,30 +1,26 @@
-from flask import Flask
-from backend.config import DB_PATH
-from backend.models.user_model import db as db_user
-from backend.models.event_model import db as db_event
-from backend.models.notification_log_model import db as db_log
-from backend.routes.auth_routes import auth_bp
-from backend.routes.user_routes import user_bp
-from backend.routes.event_routes import event_bp
-from backend.routes.notification_routes import notification_bp
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = "supersecretkey"
+app = Flask(__name__)
+CORS(app)
 
-    db_user.init_app(app)
-    db_event.init_app(app)
-    db_log.init_app(app)
-    with app.app_context():
-        db_user.create_all()
-        db_event.create_all()
-        db_log.create_all()
+# Dummy login route
+@app.route('/auth/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
 
-    app.register_blueprint(auth_bp, url_prefix="/auth")
-    app.register_blueprint(user_bp, url_prefix="/api")
-    app.register_blueprint(event_bp, url_prefix="/api")
-    app.register_blueprint(notification_bp, url_prefix="/api")
+    if username == "manu" and password == "1234":
+        return jsonify({"message": "Login successful"}), 200
+    else:
+        return jsonify({"message": "Invalid credentials"}), 401
 
-    return app
+
+@app.route('/')
+def home():
+    return jsonify({"message": "Backend running successfully!"})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
